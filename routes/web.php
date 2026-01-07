@@ -7,6 +7,7 @@ use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\StudentController;
 use App\Http\Controllers\Dashboard\PermissionController;
 use App\Http\Controllers\Dashboard\CategoryController;
+use App\Http\Controllers\Dashboard\SubcategoryController;
 
 
 Route::get('/dcsc', function() {
@@ -52,7 +53,16 @@ Route::group(['middleware'=>['auth'],'as'=>'dashboard.'], function(){
     Route::post('/destroy_categories',       [CategoryController::class, 'destroy_categories'])->name('destroy_categories');
     Route::post('/is_view_categories',       [CategoryController::class, 'is_view_categories'])->name('is_view_categories');
 
+    // subcategories
+    Route::get('/subcategories',                [SubcategoryController::class, 'subcategories'])->name('subcategories');
+    Route::get('/get_all_subcategories',        [SubcategoryController::class, 'get_all_subcategories'])->name('get_all_subcategories');
+    Route::post('/store_subcategories',         [SubcategoryController::class, 'store_subcategories'])->name('store_subcategories');
+    Route::post('/update_subcategories',        [SubcategoryController::class, 'update_subcategories'])->name('update_subcategories');
+    Route::post('/destroy_subcategories',       [SubcategoryController::class, 'destroy_subcategories'])->name('destroy_subcategories');
+    Route::post('/is_view_subcategories',       [SubcategoryController::class, 'is_view_subcategories'])->name('is_view_subcategories');
 
+
+    // roles and permissions
     Route::resource('roles',        RoleController::class)->middleware(['permission:الصلاحيات']);
     Route::post('/update_rolee',    [RoleController::class,       'update_rolee'])->name('update_rolee')->middleware(['permission:الصلاحيات']);
     Route::get('/get_all_role',     [PermissionController::class, 'get_all_role'])->name('get_all_role')->middleware(['permission:الصلاحيات']);
