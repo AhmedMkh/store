@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Dashboard;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Category;
-use App\Models\Product;
+use App\Models\Dashboard\Category;
+use App\Models\Dashboard\Product;
 class Subcategory extends Model
 {
     use HasFactory;

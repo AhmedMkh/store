@@ -13,7 +13,7 @@ class ModelRolesSeeder extends Seeder
     {
         $tableName = 'model_has_roles';
 
-        $admin = Admin::where('name', 'Admin')->first();
+        $admin = Admin::where('name', 'Ahmed')->first();
         $role = Role::where('name', 'admin')->first();
         DB::table($tableName)->insert([
             'role_id' => $role->id,

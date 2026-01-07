@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('product_attatchments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('product_id')->constrained('products');
+            $table->string('type');
+            $table->string('url');
             $table->timestamps();
         });
     }

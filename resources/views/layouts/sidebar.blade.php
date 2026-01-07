@@ -16,6 +16,8 @@
 
             <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('dashboard.students') }}"><i data-feather="mail"></i><span class="menu-title text-truncate" data-i18n="Email">الطلاب</span></a></li>
 
+            <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('dashboard.categories') }}"><i data-feather="mail"></i><span class="menu-title text-truncate" data-i18n="Email">الأقسام</span></a></li>
+
             @can('الصلاحيات')
                  <li class=" nav-item {{ Route::is('dashboard.roles.index')? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('dashboard.roles.index') }}"><i class="fa-solid fa-periscope"></i><span class="menu-title "> الصلاحيات</span></a></li>
             @endcan

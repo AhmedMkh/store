@@ -22,7 +22,7 @@ class AdminController extends Controller
 
 
     public function get_all_admins(Request $request){
-        $data = Admin::where('id','!=',3)->orderBy('id','desc');
+        $data = Admin::all();
         return Datatables::of($data)
 
             ->addIndexColumn()

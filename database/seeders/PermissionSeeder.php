@@ -12,36 +12,42 @@ class PermissionSeeder extends Seeder
         Permission::create([
             'name' => 'الطلاب',
             'guard_name' => 'web',
+            'parent' => 0,
             'created_at' => now(),
             'updated_at' => now()
         ]);
         Permission::create([
             'name' => 'اضافة طالب',
             'guard_name' => 'web',
+            'parent' => 1,
             'created_at' => now(),
             'updated_at' => now()
         ]);
         Permission::create([
             'name' => 'تعديل طالب',
             'guard_name' => 'web',
+            'parent' => 1,
             'created_at' => now(),
             'updated_at' => now()
         ]);
         Permission::create([
             'name' => 'حذف طالب',
             'guard_name' => 'web',
+            'parent' => 1,
             'created_at' => now(),
             'updated_at' => now()
         ]);
         Permission::create([
             'name' => 'الصلاحيات',
             'guard_name' => 'web',
+            'parent'=>0,
             'created_at' => now(),
             'updated_at' => now()
         ]);
         Permission::create([
             'name' => 'فريق النظام',
             'guard_name' => 'web',
+            'parent'=>0,
             'created_at' => now(),
             'updated_at' => now()
         ]);

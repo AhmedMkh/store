@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Dashboard;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Category;
+use App\Models\Dashboard\Subcategory;
+use App\Models\Dashboard\ProductAttatchment;
 
 
 class Product extends Model

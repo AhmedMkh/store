@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\AdminController;
 use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\StudentController;
 use App\Http\Controllers\Dashboard\PermissionController;
+use App\Http\Controllers\Dashboard\CategoryController;
 
 
 Route::get('/dcsc', function() {
@@ -42,6 +43,14 @@ Route::group(['middleware'=>['auth'],'as'=>'dashboard.'], function(){
     Route::post('/store_admins',        [AdminController::class, 'store_admins'])->name('store_admins')->middleware(['permission:فريق النظام']);
     Route::post('/update_admins',       [AdminController::class, 'update_admins'])->name('update_admins')->middleware(['permission:فريق النظام']);
     Route::post('/destroy_admins',      [AdminController::class, 'destroy_admins'])->name('destroy_admins')->middleware(['permission:فريق النظام']);
+
+    // categories
+    Route::get('/categories',                [CategoryController::class, 'categories'])->name('categories');
+    Route::get('/get_all_categories',        [CategoryController::class, 'get_all_categories'])->name('get_all_categories');
+    Route::post('/store_categories',         [CategoryController::class, 'store_categories'])->name('store_categories');
+    Route::post('/update_categories',        [CategoryController::class, 'update_categories'])->name('update_categories');
+    Route::post('/destroy_categories',       [CategoryController::class, 'destroy_categories'])->name('destroy_categories');
+    Route::post('/is_view_categories',       [CategoryController::class, 'is_view_categories'])->name('is_view_categories');
 
 
     Route::resource('roles',        RoleController::class)->middleware(['permission:الصلاحيات']);

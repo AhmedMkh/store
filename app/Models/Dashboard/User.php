@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Dashboard;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Passport\HasApiTokens;
