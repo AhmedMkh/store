@@ -50,7 +50,7 @@
                     <!-- col -->
 
                         <ul id="treeview1">
-                            <li><a href="#">الصلاحيات</a>
+                            <li><a href="#">الأدوار</a>
                                 <ul>
                                     {{-- <li>
                                         @foreach($permission as $value)

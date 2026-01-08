@@ -19,12 +19,12 @@
             <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('dashboard.categories') }}"><i data-feather="layers"></i><span class="menu-title text-truncate" data-i18n="">الأقسام</span></a></li>
 
             <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('dashboard.subcategories') }}"><i data-feather="list"></i><span class="menu-title text-truncate" data-i18n="">الأقسام الفرعية</span></a></li>
-            @can('الصلاحيات')
-                 <li class=" nav-item {{ Route::is('dashboard.roles.index')? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('dashboard.roles.index') }}"><i class="fa-solid fa-periscope"></i><span class="menu-title "> الصلاحيات</span></a></li>
+            @can('الأدوار')
+                 <li class=" nav-item {{ Route::is('dashboard.roles.index')? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('dashboard.roles.index') }}"><i data-feather="shield"></i><span class="menu-title "> الأدوار</span></a></li>
             @endcan
 
             @can('فريق النظام')
-                <li class=" nav-item {{ Route::is('dashboard.admins')? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('dashboard.admins') }}"><i class="fa-solid fa-person"></i><span class="menu-title ">فريق النظام</span></a></li>
+                <li class=" nav-item {{ Route::is('dashboard.admins')? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('dashboard.admins') }}"><i data-feather="users"></i><span class="menu-title ">فريق النظام</span></a></li>
             @endcan
 
             {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="file-text"></i><span class="menu-title text-truncate" data-i18n="Invoice">صفحات</span></a>

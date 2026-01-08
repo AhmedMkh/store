@@ -63,9 +63,9 @@ Route::group(['middleware'=>['auth'],'as'=>'dashboard.'], function(){
 
 
     // roles and permissions
-    Route::resource('roles',        RoleController::class)->middleware(['permission:الصلاحيات']);
-    Route::post('/update_rolee',    [RoleController::class,       'update_rolee'])->name('update_rolee')->middleware(['permission:الصلاحيات']);
-    Route::get('/get_all_role',     [PermissionController::class, 'get_all_role'])->name('get_all_role')->middleware(['permission:الصلاحيات']);
+    Route::resource('roles',        RoleController::class)->middleware(['permission:الأدوار']);
+    Route::post('/update_rolee',    [RoleController::class,       'update_rolee'])->name('update_rolee')->middleware(['permission:الأدوار']);
+    Route::get('/get_all_role',     [PermissionController::class, 'get_all_role'])->name('get_all_role')->middleware(['permission:الأدوار']);
 
     Route::get('/myprofile',             [AdminController::class,'myprofile'])->name('myprofile');
     Route::post('/myprofile_update',     [AdminController::class,'myprofile_update'])->name('myprofile_update');

@@ -1,6 +1,6 @@
 
 
-<a class="btn btn-sm btn-primary"
+<a class="btn btn-sm" style="background-color: #4539adff; color: white;"
 href="{{ route('dashboard.roles.show', $data->id) }}" >
 
 <i class="fa fa-show"></i>عرض الصلاحيات </a>

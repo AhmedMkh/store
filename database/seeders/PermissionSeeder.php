@@ -38,7 +38,7 @@ class PermissionSeeder extends Seeder
             'updated_at' => now()
         ]);
         Permission::create([
-            'name' => 'الصلاحيات',
+            'name' => 'الأدوار',
             'guard_name' => 'web',
             'parent'=>0,
             'created_at' => now(),

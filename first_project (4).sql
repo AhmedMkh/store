@@ -258,7 +258,7 @@ INSERT INTO `permissions` (`id`, `name`, `parent`, `guard_name`, `created_at`, `
 (2, 'اضافة طالب', 1, 'web', NULL, NULL),
 (3, 'تعديل طالب', 1, 'web', NULL, NULL),
 (4, 'حذف طالب', 1, 'web', NULL, NULL),
-(5, 'الصلاحيات', 0, 'web', NULL, NULL),
+(5, 'الأدوار', 0, 'web', NULL, NULL),
 (6, 'فريق النظام', 0, 'web', NULL, NULL);
 
 -- --------------------------------------------------------

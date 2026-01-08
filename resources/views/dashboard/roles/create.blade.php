@@ -55,7 +55,7 @@
 
 
                         <ul id="treeview1">
-                            <li style="font-size: 19px"><a href="#">الصلاحيات</a>
+                            <li style="font-size: 19px"><a href="#">الأدوار</a>
                                 <ul>
                             </li>
 
