@@ -8,6 +8,7 @@ use App\Http\Controllers\Dashboard\StudentController;
 use App\Http\Controllers\Dashboard\PermissionController;
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\SubcategoryController;
+use App\Http\Controllers\Dashboard\ProductController;
 
 
 Route::get('/dcsc', function() {
@@ -60,6 +61,15 @@ Route::group(['middleware'=>['auth'],'as'=>'dashboard.'], function(){
     Route::post('/update_subcategories',        [SubcategoryController::class, 'update_subcategories'])->name('update_subcategories');
     Route::post('/destroy_subcategories',       [SubcategoryController::class, 'destroy_subcategories'])->name('destroy_subcategories');
     Route::post('/is_view_subcategories',       [SubcategoryController::class, 'is_view_subcategories'])->name('is_view_subcategories');
+
+
+    // products
+    Route::get('/products',                [ProductController::class, 'products'])->name('products');
+    Route::get('/get_all_products',        [ProductController::class, 'get_all_products'])->name('get_all_products');
+    Route::post('/store_products',         [ProductController::class, 'store_products'])->name('store_products');
+    Route::post('/update_products',        [ProductController::class, 'update_products'])->name('update_products');
+    Route::post('/destroy_products',       [ProductController::class, 'destroy_products'])->name('destroy_products');
+    Route::post('/is_view_products',       [ProductController::class, 'is_view_products'])->name('is_view_products');
 
 
     // roles and permissions

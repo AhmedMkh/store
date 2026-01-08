@@ -19,6 +19,8 @@
             <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('dashboard.categories') }}"><i data-feather="layers"></i><span class="menu-title text-truncate" data-i18n="">الأقسام</span></a></li>
 
             <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('dashboard.subcategories') }}"><i data-feather="list"></i><span class="menu-title text-truncate" data-i18n="">الأقسام الفرعية</span></a></li>
+
+            <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('dashboard.products') }}"><i data-feather="shopping-cart"></i><span class="menu-title text-truncate" data-i18n="">المنتجات</span></a></li>
             @can('الأدوار')
                  <li class=" nav-item {{ Route::is('dashboard.roles.index')? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('dashboard.roles.index') }}"><i data-feather="shield"></i><span class="menu-title "> الأدوار</span></a></li>
             @endcan

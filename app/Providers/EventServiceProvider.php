@@ -5,6 +5,10 @@ namespace App\Providers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use App\Models\Dashboard\Category;
+use App\Observers\CategoryObserver;
+use App\Models\Dashboard\Subcategory;
+use App\Observers\SubcategoryObserver;
 use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
@@ -25,7 +29,8 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Category::observe(CategoryObserver::class);
+        Subcategory::observe(SubcategoryObserver::class);
     }
 
     /**
