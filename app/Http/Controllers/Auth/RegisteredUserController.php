@@ -45,7 +45,7 @@ class RegisteredUserController extends Controller
 
             'password.required' => 'يرجى إدخال كلمة المرور.',
             'password.confirmed' => 'تأكيد كلمة المرور غير متطابق.',
-            'password.min' => 'يجب أن تكون كلمة المرور على الأقل 8 أحرف.', 
+            'password.min' => 'يجب أن تكون كلمة المرور على الأقل 8 أحرف.',
         ]);
 
         $user = User::create([
@@ -58,6 +58,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect('/dashboard');
     }
 }

@@ -67,9 +67,9 @@ class Product extends Model
         return $this->belongsTo(Subcategory::class);
     }
 
-    public function attatchments()
+    public function attachments()
     {
-        return $this->hasMany(ProductAttatchment::class);
+        return $this->hasMany(ProductAttachment::class);
     }
 
     public function getImageAttribute($value)

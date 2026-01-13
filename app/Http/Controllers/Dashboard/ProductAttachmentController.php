@@ -7,39 +7,33 @@ namespace App\Http\Controllers\Dashboard;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use App\Models\Dashboard\Product;
-use App\Models\Dashboard\Subcategory;
+use App\Models\Dashboard\ProductAttachment;
+use App\Models\Dashboard\Category;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
-class ProductController extends Controller
+class ProductAttachmentController extends Controller
 {
-    public function products(){
+    public function product_attachments(){
 
-        $subcategories = Subcategory::all();
-
-        return view('dashboard.products.index',compact('subcategories'));
+        return view('dashboard.product_attachments.index');
     }
 
-    public function get_all_products(Request $request)
+    public function get_all_product_attachments(Request $request)
     {
         if ($request->ajax()) {
-            $data = Product::with('subcategory')->select('products.*')->orderBy('id','desc');
+            $data = ProductAttachment::with('product')->select('product_attachments.*')->orderBy('id','desc');
             return Datatables::of($data)
 
                 ->addIndexColumn()
 
-                ->addColumn('subcategory', function ($row) {
-                return $row->subcategory ? $row->subcategory->name : '-';
+                ->addColumn('product', function ($row) {
+                return $row->product ? $row->product->name : '-';
                 })
 
                 ->editColumn('name', function ($data) {
                     return '<span style="color:black">'.$data->name.'</span>';
-                })
-
-                ->addColumn('status', function ($data) {
-                    return view('dashboard.products.btn.action2', compact('data'));
                 })
 
                 ->addColumn('image', function ($data) {
@@ -48,10 +42,8 @@ class ProductController extends Controller
 
 
                 ->addColumn('action', function ($data) {
-                    return view('dashboard.products.btn.action', compact('data'));
+                    return view('dashboard.product_attachments.btn.action', compact('data'));
                 })
-
-
 
                 ->rawColumns(['image','name'])
 
@@ -59,39 +51,25 @@ class ProductController extends Controller
         }
     }
 
-    public function store_products(Request $request){
+    public function store_product_attachments(Request $request){
 
         try {
             
              $validator = Validator::make($request->all(),
                 [ 
-                    'name' => 'required|string|max:255',
-                    'subcategory_id' => 'required|exists:subcategories,id',
-                    'description' => 'nullable|string',
-                    'price' => 'required|numeric|min:0',
-                    'discount_price' => 'nullable|numeric|min:0|lt:price',
-                    'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-                    'status' => 'required|in:active,inactive',
-                    'slug' => 'nullable|unique:products,slug',
+                    'product_id' => 'required|exists:products,id',
+                    'type' => 'required|in:image,video',
+                    'path' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
                 ],
                 [
-                    'name.required' => 'هذا الاسم مطلوب',
-                    'image.required' => 'الصورة مطلوبة',
-                    'image.image' => 'يجب أن تكون الصورة من نوع صورة',
-                    'image.mimes' => 'الصور المدعومة هي: jpeg, png, jpg, gif',
-                    'image.max' => 'حجم الصورة يجب أن يكون أقل من 2 ميجابايت',
-                    'status.required' => 'حالة القسم الفرعي مطلوبة',
-                    'subcategory_id.required' => 'رقم القسم الفرعي مطلوب',
-                    'subcategory_id.exists' => 'القسم الفرعي غير موجود',
-                    'description.nullable' => 'الوصف يجب أن يكون نصًا',
-                    'price.required' => 'السعر مطلوب',
-                    'price.numeric' => 'السعر يجب أن يكون رقمًا',
-                    'price.min' => 'السعر يجب أن يكون أكبر من 0',
-                    'discount_price.nullable' => 'سعر الخصم يجب أن يكون رقمًا',
-                    'discount_price.numeric' => 'سعر الخصم يجب أن يكون رقمًا',
-                    'discount_price.min' => 'سعر الخصم يجب أن يكون أكبر من 0',
-                    'discount_price.lt' => 'سعر الخصم يجب أن يكون أقل من السعر الأصلي',
-                    'slug.unique' => 'هذا الرابط مستخدم من قبل',
+                    'product_id.required' => 'رقم المنتج مطلوب',
+                    'product_id.exists' => 'المنتج غير موجود',
+                    'type.required' => 'نوع المرفق مطلوب',
+                    'type.in' => 'نوع المرفق غير صالح',
+                    'path.required' => 'الصورة مطلوبة',
+                    'path.image' => 'يجب أن تكون الصورة من نوع صورة',
+                    'path.mimes' => 'الصور المدعومة هي: jpeg, png, jpg, gif',
+                    'path.max' => 'حجم الصورة يجب أن يكون أقل من 2 ميجابايت',
                 ]
             );
 
@@ -111,18 +89,18 @@ class ProductController extends Controller
                 $image_url = \Illuminate\Support\Str::uuid() . '.' . $request->image->getClientOriginalExtension();
                 
                 // نقل الصورة للمجلد
-                $request->image->move(public_path('attachments/products'), $image_url);
+                $request->image->move(public_path('attachments/product_attachments'), $image_url);
 
                 // 3. إضافة اسم الصورة للمصفوفة
                 $data['image'] = $image_url;
             }
 
             // 4. الحفظ بسطر واحد باستخدام المصفوفة المجهزة
-            $product = Product::create($data);
+            $ProductAttachment = ProductAttachment::create($data);
 
 
 
-            if ($product) {
+            if ($ProductAttachment) {
                 return response()->json([
                     'status' => true,
                     'msg' => 'تمت الاضافة بنجاح',
@@ -146,41 +124,26 @@ class ProductController extends Controller
 
     }
 
-    public function update_products(Request $request){
+    public function update_product_attachments(Request $request){
 
         try {
 
                 $validator = Validator::make($request->all(),
                     [ 
-                        'id' => 'required|exists:products,id',
                         'name' => 'required|string|max:255',
-                        'subcategory_id' => 'required|exists:subcategories,id',
-                        'description' => 'nullable|string',
-                        'price' => 'required|numeric|min:0',
-                        'discount_price' => 'nullable|numeric|min:0|lt:price',
-                        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
                         'status' => 'required|in:active,inactive',
-                        'slug' => 'nullable|unique:products,slug,'.$request->id,
+                        'category_id' => 'required|exists:categories,id',
+                        'slug' => 'nullable|unique:product_attachments,slug,'.$request->id,
                     ],
                     [
-                        'id.required' => 'رقم المنتج مطلوب',
-                        'id.exists' => 'المنتج غير موجود',
                         'name.required' => 'هذا الاسم مطلوب',
-                        'image.required' => 'الصورة مطلوبة',
                         'image.image' => 'يجب أن تكون الصورة من نوع صورة',
                         'image.mimes' => 'الصور المدعومة هي: jpeg, png, jpg, gif',
                         'image.max' => 'حجم الصورة يجب أن يكون أقل من 2 ميجابايت',
                         'status.required' => 'حالة القسم الفرعي مطلوبة',
-                        'subcategory_id.required' => 'رقم القسم الفرعي مطلوب',
-                        'subcategory_id.exists' => 'القسم الفرعي غير موجود',
-                        'description.nullable' => 'الوصف يجب أن يكون نصًا',
-                        'price.required' => 'السعر مطلوب',
-                        'price.numeric' => 'السعر يجب أن يكون رقمًا',
-                        'price.min' => 'السعر يجب أن يكون أكبر من 0',
-                        'discount_price.nullable' => 'سعر الخصم يجب أن يكون رقمًا',
-                        'discount_price.numeric' => 'سعر الخصم يجب أن يكون رقمًا',
-                        'discount_price.min' => 'سعر الخصم يجب أن يكون أكبر من 0',
-                        'discount_price.lt' => 'سعر الخصم يجب أن يكون أقل من السعر الأصلي',
+                        'category_id.required' => 'رقم القسم الرئيسي مطلوب',
+                        'category_id.exists' => 'القسم الرئيسي غير موجود',
                         'slug.unique' => 'هذا الرابط مستخدم من قبل',
                     ]
                 );
@@ -191,18 +154,18 @@ class ProductController extends Controller
                     ], 422);
                 }
 
-            $product = Product::findorfail($request->id);
+            $ProductAttachment = ProductAttachment::findorfail($request->id);
 
             $data = $request->except('image');
             if ($request->hasFile('image')) {
                 $image_url = \Illuminate\Support\Str::uuid() . '.' . $request->image->getClientOriginalExtension();
-                $request->image->move(public_path('attachments/products'), $image_url);
+                $request->image->move(public_path('attachments/product_attachments'), $image_url);
                 $data['image'] = $image_url;
             }
 
-            $product->update($data);
+            $ProductAttachment->update($data);
 
-            if ($product) {
+            if ($ProductAttachment) {
                 return response()->json([
                     'status' => true,
                     'msg' => 'تم التعديل بنجاح',
@@ -225,12 +188,12 @@ class ProductController extends Controller
 
     }
 
-    public function destroy_products(Request $request){
+    public function destroy_product_attachments(Request $request){
 
         try {
 
-            $product = Product::find($request->id);
-            $product->delete();
+            $ProductAttachment = ProductAttachment::find($request->id);
+            $ProductAttachment->delete();
             return response()->json([
                 'status' => true,
                 'msg' => 'deleted Successfully',
@@ -248,16 +211,16 @@ class ProductController extends Controller
 
     }
 
-    public function is_view_products(Request $request){
+    public function is_view_product_attachments(Request $request){
 
         try {
                  $validator = Validator::make($request->all(),
                 [
-                    'id' => 'required|exists:products,id',
+                    'id' => 'required|exists:product_attachments,id',
                 ],
                 [
-                    'id.required' => 'رقم المنتج مطلوب',
-                    'id.exists' => 'المنتج غير موجود',
+                    'id.required' => 'رقم القسم الفرعي مطلوب',
+                    'id.exists' => 'القسم الفرعي غير موجود',
                 ]
             );
 
@@ -268,11 +231,12 @@ class ProductController extends Controller
                 ], 422);
             }
 
-                $product = Product::find($request->id);
+                $ProductAttachment = ProductAttachment::find($request->id);
 
-                $product->status = $product->status === 'active' ? 'inactive' : 'active';
+                $ProductAttachment->status = $ProductAttachment->status === 'active' ? 'inactive' : 'active';
 
-                $product->save();
+                $ProductAttachment->save();
+
                 return response()->json([
                     'status' => true,
                     'msg' => 'تم التعديل بنجاح.',
