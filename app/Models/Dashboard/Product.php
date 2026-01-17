@@ -5,8 +5,10 @@ namespace App\Models\Dashboard;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Dashboard\Subcategory;
-use App\Models\Dashboard\ProductAttatchment;
+    use App\Models\Dashboard\ProductAttachment;
+use App\Models\Dashboard\Comment;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 
 class Product extends Model
@@ -72,15 +74,21 @@ class Product extends Model
         return $this->hasMany(ProductAttachment::class);
     }
 
-    public function getImageAttribute($value)
+    public function comments()
     {
+        return $this->hasMany(Comment::class);
+    }
 
-        // التحقق من وجود قيمة للصورة
-        if ($value) {
-            return url('attachments/products/' . $value);
-        }
-
-        // إذا لم تكن هناك صورة، يمكن إرجاع صورة افتراضية
-        return url('attachments/default.png');
+    /**
+     * Get the image attribute with full path.
+     * المسار الخاص بتخزين الصورة
+     */
+    protected function image(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $value
+                ? url('attachments/products/' . $value)
+                : url('attachments/default.png'),
+        );
     }
 }

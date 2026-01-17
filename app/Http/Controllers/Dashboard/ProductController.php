@@ -59,12 +59,19 @@ class ProductController extends Controller
         }
     }
 
+    public function product_details($product_id){
+
+        $product = Product::with(['subcategory', 'attachments', 'comments.user'])->findorfail($product_id);
+
+        return view('dashboard.products.product_details',compact('product'));
+    }
+
     public function store_products(Request $request){
 
         try {
-            
+
              $validator = Validator::make($request->all(),
-                [ 
+                [
                     'name' => 'required|string|max:255',
                     'subcategory_id' => 'required|exists:subcategories,id',
                     'description' => 'nullable|string',
@@ -109,7 +116,7 @@ class ProductController extends Controller
             // 2. معالجة الصورة إذا وجدت
             if ($request->hasFile('image')) {
                 $image_url = \Illuminate\Support\Str::uuid() . '.' . $request->image->getClientOriginalExtension();
-                
+
                 // نقل الصورة للمجلد
                 $request->image->move(public_path('attachments/products'), $image_url);
 
@@ -151,7 +158,7 @@ class ProductController extends Controller
         try {
 
                 $validator = Validator::make($request->all(),
-                    [ 
+                    [
                         'id' => 'required|exists:products,id',
                         'name' => 'required|string|max:255',
                         'subcategory_id' => 'required|exists:subcategories,id',

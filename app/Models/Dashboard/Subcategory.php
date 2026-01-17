@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Dashboard\Category;
 use App\Models\Dashboard\Product;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
 class Subcategory extends Model
 {
     use HasFactory;
@@ -62,15 +64,16 @@ class Subcategory extends Model
         return $this->hasMany(Product::class);
     }
 
-    public function getImageAttribute($value)
+    /**
+     * Get the image attribute with full path.
+     * المسار الخاص بتخزين الصورة
+     */
+    protected function image(): Attribute
     {
-
-        // التحقق من وجود قيمة للصورة
-        if ($value) {
-            return url('attachments/subcategories/' . $value);
-        }
-
-        // إذا لم تكن هناك صورة، يمكن إرجاع صورة افتراضية
-        return url('attachments/default.png');
+        return Attribute::make(
+            get: fn ($value) => $value
+                ? url('attachments/subcategories/' . $value)
+                : url('attachments/default.png'),
+        );
     }
 }

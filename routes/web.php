@@ -9,6 +9,8 @@ use App\Http\Controllers\Dashboard\PermissionController;
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\SubcategoryController;
 use App\Http\Controllers\Dashboard\ProductController;
+use App\Http\Controllers\Dashboard\ProductAttachmentController;
+use App\Http\Controllers\Dashboard\CommentController;
 
 
 Route::get('/dcsc', function() {
@@ -65,12 +67,26 @@ Route::group(['middleware'=>['auth'],'as'=>'dashboard.'], function(){
 
     // products
     Route::get('/products',                [ProductController::class, 'products'])->name('products');
+    Route::get('/product_details/{product_id}', [ProductController::class, 'product_details'])->name('product_details');
     Route::get('/get_all_products',        [ProductController::class, 'get_all_products'])->name('get_all_products');
     Route::post('/store_products',         [ProductController::class, 'store_products'])->name('store_products');
     Route::post('/update_products',        [ProductController::class, 'update_products'])->name('update_products');
     Route::post('/destroy_products',       [ProductController::class, 'destroy_products'])->name('destroy_products');
     Route::post('/is_view_products',       [ProductController::class, 'is_view_products'])->name('is_view_products');
 
+
+    // product attachments
+    Route::get('/product_attachments/{product_id}',        [ProductAttachmentController::class, 'product_attachments'])->name('product_attachments');
+    Route::get('/get_all_product_attachments/{product_id}',[ProductAttachmentController::class, 'get_all_product_attachments'])->name('get_all_product_attachments');
+    Route::post('/store_product_attachments',              [ProductAttachmentController::class, 'store_product_attachments'])->name('store_product_attachments');
+    Route::post('/destroy_product_attachments',            [ProductAttachmentController::class, 'destroy_product_attachments'])->name('destroy_product_attachments');
+
+
+    // comments
+    Route::get('/comments/{product_id}',        [CommentController::class, 'comments'])->name('comments');
+    Route::get('/get_all_comments/{product_id}',[CommentController::class, 'get_all_comments'])->name('get_all_comments');
+    Route::post('/store_comments',              [CommentController::class, 'store_comments'])->name('store_comments');
+    Route::post('/destroy_comments',            [CommentController::class, 'destroy_comments'])->name('destroy_comments');
 
     // roles and permissions
     Route::resource('roles',        RoleController::class)->middleware(['permission:الأدوار']);
