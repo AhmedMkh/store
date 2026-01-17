@@ -79,6 +79,11 @@ class Product extends Model
         return $this->hasMany(Comment::class);
     }
 
+    public function inventory()
+    {
+        return $this->hasOne(Inventory::class);
+    }
+
     /**
      * Get the image attribute with full path.
      * المسار الخاص بتخزين الصورة

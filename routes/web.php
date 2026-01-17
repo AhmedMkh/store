@@ -11,6 +11,7 @@ use App\Http\Controllers\Dashboard\SubcategoryController;
 use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\Dashboard\ProductAttachmentController;
 use App\Http\Controllers\Dashboard\CommentController;
+use App\Http\Controllers\Dashboard\InventoryController;
 
 
 Route::get('/dcsc', function() {
@@ -87,6 +88,14 @@ Route::group(['middleware'=>['auth'],'as'=>'dashboard.'], function(){
     Route::get('/get_all_comments/{product_id}',[CommentController::class, 'get_all_comments'])->name('get_all_comments');
     Route::post('/store_comments',              [CommentController::class, 'store_comments'])->name('store_comments');
     Route::post('/destroy_comments',            [CommentController::class, 'destroy_comments'])->name('destroy_comments');
+
+    // inventory
+    Route::get('/inventory',                [InventoryController::class, 'inventory'])->name('inventory');
+    Route::get('/get_all_inventory',        [InventoryController::class, 'get_all_inventory'])->name('get_all_inventory');
+    Route::post('/store_inventory',         [InventoryController::class, 'store_inventory'])->name('store_inventory');
+    Route::post('/update_inventory',        [InventoryController::class, 'update_inventory'])->name('update_inventory');
+    Route::post('/destroy_inventory',       [InventoryController::class, 'destroy_inventory'])->name('destroy_inventory');
+
 
     // roles and permissions
     Route::resource('roles',        RoleController::class)->middleware(['permission:الأدوار']);
