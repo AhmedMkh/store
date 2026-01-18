@@ -25,6 +25,8 @@
 
             <li class=" nav-item {{ Route::is('dashboard.inventory')? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('dashboard.inventory') }}"><i data-feather="archive"></i><span class="menu-title text-truncate" data-i18n="">المخزون</span></a></li>
 
+            <li class=" nav-item {{ Route::is('dashboard.coupons')? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('dashboard.coupons') }}"><i data-feather="tag"></i><span class="menu-title text-truncate" data-i18n="">القسائم الشرائية</span></a></li>
+
             @can('الأدوار')
                  <li class=" nav-item {{ Route::is('dashboard.roles.index')? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('dashboard.roles.index') }}"><i data-feather="shield"></i><span class="menu-title "> الأدوار</span></a></li>
             @endcan

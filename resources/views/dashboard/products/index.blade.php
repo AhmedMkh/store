@@ -229,7 +229,7 @@
                                 </div>
                             </div>
 
-                            
+
 
                             <div class="col-md-12">
                                 <label>القسم الفرعي</label>
@@ -444,7 +444,7 @@
                 {data: 'DT_RowIndex'   ,name: 'DT_RowIndex', orderable: false, searchable: false},
                 {data: 'name'          ,name: 'name'},
                 {data: 'slug'       ,name: 'slug'},
-                {data: 'subcategory', name: 'subcategory.name'}, 
+                {data: 'subcategory', name: 'subcategory.name'},
                 {data: 'description'   ,name: 'description'},
                 {data: 'price'         ,name: 'price'},
                 {data: 'discount_price',name: 'discount_price'},
@@ -548,8 +548,12 @@
     <script>
         $(document).on('click', '#add_user', function (e) {
             $('#name_error').text('');
+            $('#description_error').text('');
+            $('#subcategory_id_error').text('');
+            $('#price_error').text('');
+            $('#discount_price_error').text('');
+            $('#status_error').text('');
             $('#image_error').text('');
-
 
             $("#add_user2").css("display", "block");
             $("#add_user").css("display", "none");
@@ -621,9 +625,13 @@
    <script>
         function do_update(){
 
-            $('#name2_error').text('')
-
-
+            $('#name2_error').text('');
+            $('#description2_error').text('');
+            $('#subcategory_id2_error').text('');
+            $('#price2_error').text('');
+            $('#discount_price2_error').text('');
+            $('#status_error').text('');
+            $('#image_error').text('');
 
             $("#editing").css("display", "none");
             $("#editing2").css("display", "block");

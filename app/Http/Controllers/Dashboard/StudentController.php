@@ -241,239 +241,239 @@ class StudentController extends Controller
     // هنا يوجد اضافة الوان و تصنيفات فرعية وصور متعددة بالنسبة للصور
     //  وتحديث الصور فقط هنا يزبط لل api    لانو حاطط ارجاع الصورة بالمسار كامل في المودل
     //في المنتجات اما الطلاب لا  api باختصار التعديلات بالنسبة للصور لل
-    public function add_product(Request $request)
-    {
-        DB::beginTransaction();
+    // public function add_product(Request $request)
+    // {
+    //     DB::beginTransaction();
 
-        try {
+    //     try {
 
-            // return $request->all();
-
-
-            $new_product = new Product();
-            $new_product->name = $request->name;
-            $new_product->description = $request->description;
-            $new_product->price_before = $request->price_before;
-            $new_product->price_after = $request->price_after;
-            $new_product->qty = $request->qty;
-            $new_product->brand_id = $request->brand_id;
-            $new_product->category_id = $request->category_id;
-            $new_product->save();
-
-            if ($request->hasFile('images')) {
-
-                  // إضافة الفاليديشن
-                // $validator = Validator::make($request->all(), [
-                //     'images' => 'required|array', // يجب أن يكون هناك مجموعة من الصور
-                //     'images.*' => 'file|mimes:jpeg,png,jpg,gif,svg|max:2048', // التحقق من أن كل صورة هي ملف وصيغة معينة
-                // ]);
-
-                // // التحقق من الفاليديشن
-                // if ($validator->fails()) {
-                //     return response()->json(['error' => $validator->errors()], 400);
-                // }
-
-                $image_data = [];
-
-                foreach ($request->file('images') as $image) {
-
-                    // تأكد من أن الصورة ليست فارغة
-                    if ($image && $image->isValid()) {
-
-                        $image_url = Str::uuid() . '.' . $image->getClientOriginalExtension();
-                        $image_data[] = [
-                            'type' => 'image',
-                            'product_id' => $new_product->id,
-                            'image' => $image_url,
-                        ];
-
-                        // قم بتحريك الصورة إلى المسار المناسب
-                        $image->move(public_path('attachments/products'), $image_url);
-                    }
-                }
-
-                // إدخال الصور دفعة واحدة في قاعدة البيانات
-                ProductImage::insert($image_data);
-            }
-
-            if ($request->has('sub_categories')) {
-
-                    $sub_categories_data = [];
-
-                    $sub_categories = json_decode($request->sub_categories);
-
-                    foreach ($sub_categories as $sub_category) {
-
-                        $sub_categories_data[] = [
-                            'product_id' => $new_product->id,
-                            'subcategory_id' => $sub_category,
-                        ];
-                    }
-
-                    ProductSubCategory::insert($sub_categories_data); // إدخال الألوان دفعة واحدة
-
-            }
+    //         // return $request->all();
 
 
-            if ($request->has('colors')) {
+    //         $new_product = new Product();
+    //         $new_product->name = $request->name;
+    //         $new_product->description = $request->description;
+    //         $new_product->price_before = $request->price_before;
+    //         $new_product->price_after = $request->price_after;
+    //         $new_product->qty = $request->qty;
+    //         $new_product->brand_id = $request->brand_id;
+    //         $new_product->category_id = $request->category_id;
+    //         $new_product->save();
+
+    //         if ($request->hasFile('images')) {
+
+    //               // إضافة الفاليديشن
+    //             // $validator = Validator::make($request->all(), [
+    //             //     'images' => 'required|array', // يجب أن يكون هناك مجموعة من الصور
+    //             //     'images.*' => 'file|mimes:jpeg,png,jpg,gif,svg|max:2048', // التحقق من أن كل صورة هي ملف وصيغة معينة
+    //             // ]);
+
+    //             // // التحقق من الفاليديشن
+    //             // if ($validator->fails()) {
+    //             //     return response()->json(['error' => $validator->errors()], 400);
+    //             // }
+
+    //             $image_data = [];
+
+    //             foreach ($request->file('images') as $image) {
+
+    //                 // تأكد من أن الصورة ليست فارغة
+    //                 if ($image && $image->isValid()) {
+
+    //                     $image_url = Str::uuid() . '.' . $image->getClientOriginalExtension();
+    //                     $image_data[] = [
+    //                         'type' => 'image',
+    //                         'product_id' => $new_product->id,
+    //                         'image' => $image_url,
+    //                     ];
+
+    //                     // قم بتحريك الصورة إلى المسار المناسب
+    //                     $image->move(public_path('attachments/products'), $image_url);
+    //                 }
+    //             }
+
+    //             // إدخال الصور دفعة واحدة في قاعدة البيانات
+    //             ProductImage::insert($image_data);
+    //         }
+
+    //         if ($request->has('sub_categories')) {
+
+    //                 $sub_categories_data = [];
+
+    //                 $sub_categories = json_decode($request->sub_categories);
+
+    //                 foreach ($sub_categories as $sub_category) {
+
+    //                     $sub_categories_data[] = [
+    //                         'product_id' => $new_product->id,
+    //                         'subcategory_id' => $sub_category,
+    //                     ];
+    //                 }
+
+    //                 ProductSubCategory::insert($sub_categories_data); // إدخال الألوان دفعة واحدة
+
+    //         }
 
 
-                $color_data = [];
-                $colors = json_decode($request->colors);
-                foreach ($colors as $color) {
-                    $color_data[] = [
-                        'type' => 'color',
-                        'product_id' => $new_product->id,
-                        'color' => $color,
-                    ];
-                }
-
-                ProductImage::insert($color_data); // إدخال الألوان دفعة واحدة
-
-            }
-
-            DB::commit();
-            return response()->json(
-                [
-                    'message' => 'Product added successfully!',
-                    'status' =>true
-        ], 201);
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(
-                [
-                    'error' => 'Failed to add product: ' . $e->getMessage(),
-                    'status' =>false
-                ], 500);
-        }
-    }
-
-    public function update_product(Request $request)
-    {
-        DB::beginTransaction();
-
-        try {
-            // العثور على المنتج
-            $product = Product::with('images')->findOrFail($request->id);
-
-            // تحديث بيانات المنتج
-            $product->name = $request->name ?? $product->name;
-            $product->description = $request->description ?? $product->description;
-            $product->price_before = $request->price_before ?? $product->price_before;
-            $product->price_after = $request->price_after ?? $product->price_after;
-            $product->qty = $request->qty ?? $product->qty;
-            $product->brand_id = $request->brand_id ?? $product->brand_id;
-            $product->category_id = $request->category_id ?? $product->category_id;
-            $product->save();
-
-            // تحديث الصور
-            if ($request->hasFile('images')) {
-
-                $image_data = [];
-
-                // جلب الصور القديمة من قاعدة البيانات
-                $old_images = ProductImage::where('product_id', $product->id)->where('type', 'image')->get();
-
-                // حذف الصور القديمة من ملف `public`
-                foreach ($old_images as $old_image) {
-
-                    // استخراج اسم الملف من الرابط
-                    // $old_image->image هاي بترجع مسار الصورة بالكامل لانو بالمودل انا مرجع الصورة ترجع المسار بالكامل عشان هيك بستخرج الاسم
-                    $filename = basename($old_image->image);
-
-                     // إنشاء المسار المحلي الصحيح
-                    $image_path = public_path('attachments/products/' . $filename);
-
-                    if (file_exists($image_path)) {
-                        unlink($image_path);
-                    }
-                }
-
-                // حذف الصور القديمة من قاعدة البيانات
-                ProductImage::where('product_id', $product->id)->where('type', 'image')->delete();
-
-                // رفع الصور الجديدة
-                foreach ($request->file('images') as $image) {
-                    if ($image && $image->isValid()) {
-                        $image_url = Str::uuid() . '.' . $image->getClientOriginalExtension();
-                        $image_data[] = [
-                            'type' => 'image',
-                            'product_id' => $product->id,
-                            'image' => $image_url,
-                        ];
-                        $image->move(public_path('attachments/products'), $image_url);
-                    }
-                }
+    //         if ($request->has('colors')) {
 
 
+    //             $color_data = [];
+    //             $colors = json_decode($request->colors);
+    //             foreach ($colors as $color) {
+    //                 $color_data[] = [
+    //                     'type' => 'color',
+    //                     'product_id' => $new_product->id,
+    //                     'color' => $color,
+    //                 ];
+    //             }
 
-                // إدخال الصور الجديدة في قاعدة البيانات
-                ProductImage::insert($image_data);
-            }
+    //             ProductImage::insert($color_data); // إدخال الألوان دفعة واحدة
+
+    //         }
+
+    //         DB::commit();
+    //         return response()->json(
+    //             [
+    //                 'message' => 'Product added successfully!',
+    //                 'status' =>true
+    //     ], 201);
+
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         return response()->json(
+    //             [
+    //                 'error' => 'Failed to add product: ' . $e->getMessage(),
+    //                 'status' =>false
+    //             ], 500);
+    //     }
+    // }
+
+    // public function update_product(Request $request)
+    // {
+    //     DB::beginTransaction();
+
+    //     try {
+    //         // العثور على المنتج
+    //         $product = Product::with('images')->findOrFail($request->id);
+
+    //         // تحديث بيانات المنتج
+    //         $product->name = $request->name ?? $product->name;
+    //         $product->description = $request->description ?? $product->description;
+    //         $product->price_before = $request->price_before ?? $product->price_before;
+    //         $product->price_after = $request->price_after ?? $product->price_after;
+    //         $product->qty = $request->qty ?? $product->qty;
+    //         $product->brand_id = $request->brand_id ?? $product->brand_id;
+    //         $product->category_id = $request->category_id ?? $product->category_id;
+    //         $product->save();
+
+    //         // تحديث الصور
+    //         if ($request->hasFile('images')) {
+
+    //             $image_data = [];
+
+    //             // جلب الصور القديمة من قاعدة البيانات
+    //             $old_images = ProductImage::where('product_id', $product->id)->where('type', 'image')->get();
+
+    //             // حذف الصور القديمة من ملف `public`
+    //             foreach ($old_images as $old_image) {
+
+    //                 // استخراج اسم الملف من الرابط
+    //                 // $old_image->image هاي بترجع مسار الصورة بالكامل لانو بالمودل انا مرجع الصورة ترجع المسار بالكامل عشان هيك بستخرج الاسم
+    //                 $filename = basename($old_image->image);
+
+    //                  // إنشاء المسار المحلي الصحيح
+    //                 $image_path = public_path('attachments/products/' . $filename);
+
+    //                 if (file_exists($image_path)) {
+    //                     unlink($image_path);
+    //                 }
+    //             }
+
+    //             // حذف الصور القديمة من قاعدة البيانات
+    //             ProductImage::where('product_id', $product->id)->where('type', 'image')->delete();
+
+    //             // رفع الصور الجديدة
+    //             foreach ($request->file('images') as $image) {
+    //                 if ($image && $image->isValid()) {
+    //                     $image_url = Str::uuid() . '.' . $image->getClientOriginalExtension();
+    //                     $image_data[] = [
+    //                         'type' => 'image',
+    //                         'product_id' => $product->id,
+    //                         'image' => $image_url,
+    //                     ];
+    //                     $image->move(public_path('attachments/products'), $image_url);
+    //                 }
+    //             }
 
 
-            // تحديث التصنيفات الفرعية
-            if ($request->has('sub_categories')) {
 
-                $sub_categories = json_decode($request->sub_categories);
-                $sub_categories_data = [];
-
-                foreach ($sub_categories as $sub_category) {
+    //             // إدخال الصور الجديدة في قاعدة البيانات
+    //             ProductImage::insert($image_data);
+    //         }
 
 
-                    $sub_categories_data[] = [
-                        'product_id' => $product->id,
-                        'subcategory_id' => $sub_category,
-                    ];
+    //         // تحديث التصنيفات الفرعية
+    //         if ($request->has('sub_categories')) {
 
-                }
+    //             $sub_categories = json_decode($request->sub_categories);
+    //             $sub_categories_data = [];
 
-                // حذف التصنيفات الفرعية القديمة وإضافة الجديدة
-                ProductSubCategory::where('product_id', $product->id)->delete();
-                ProductSubCategory::insert($sub_categories_data);
-            }
+    //             foreach ($sub_categories as $sub_category) {
 
-            // تحديث الألوان
-            if ($request->has('colors')) {
 
-                $color_data = [];
-                $colors = json_decode($request->colors);
-                foreach ($colors as $color) {
+    //                 $sub_categories_data[] = [
+    //                     'product_id' => $product->id,
+    //                     'subcategory_id' => $sub_category,
+    //                 ];
 
-                    $color_data[] = [
-                        'type' => 'color',
-                        'product_id' => $product->id,
-                        'color' => $color,
-                    ];
-                }
+    //             }
 
-                // حذف الألوان القديمة وإضافة الجديدة
-                ProductImage::where('product_id', $product->id)->where('type', 'color')->delete();
-                ProductImage::insert($color_data);
-            }
+    //             // حذف التصنيفات الفرعية القديمة وإضافة الجديدة
+    //             ProductSubCategory::where('product_id', $product->id)->delete();
+    //             ProductSubCategory::insert($sub_categories_data);
+    //         }
 
-            $product = Product::with('images')->findOrFail($request->id);
+    //         // تحديث الألوان
+    //         if ($request->has('colors')) {
 
-            DB::commit();
-            return response()->json(
-                [
-                    'message' => 'Product updated successfully!',
-                    'status' => true,
-                    'product' => $product,
-                ],
-                200
-            );
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(
-                [
-                    'error' => 'Failed to update product: ' . $e->getMessage(),
-                    'status' => false,
-                ],
-                500
-            );
-        }
-    }
+    //             $color_data = [];
+    //             $colors = json_decode($request->colors);
+    //             foreach ($colors as $color) {
+
+    //                 $color_data[] = [
+    //                     'type' => 'color',
+    //                     'product_id' => $product->id,
+    //                     'color' => $color,
+    //                 ];
+    //             }
+
+    //             // حذف الألوان القديمة وإضافة الجديدة
+    //             ProductImage::where('product_id', $product->id)->where('type', 'color')->delete();
+    //             ProductImage::insert($color_data);
+    //         }
+
+    //         $product = Product::with('images')->findOrFail($request->id);
+
+    //         DB::commit();
+    //         return response()->json(
+    //             [
+    //                 'message' => 'Product updated successfully!',
+    //                 'status' => true,
+    //                 'product' => $product,
+    //             ],
+    //             200
+    //         );
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         return response()->json(
+    //             [
+    //                 'error' => 'Failed to update product: ' . $e->getMessage(),
+    //                 'status' => false,
+    //             ],
+    //             500
+    //         );
+    //     }
+    // }
 
 }

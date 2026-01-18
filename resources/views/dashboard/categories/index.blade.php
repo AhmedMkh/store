@@ -379,7 +379,6 @@
             $('#name_error').text('');
             $('#image_error').text('');
 
-
             $("#add_category2").css("display", "block");
             $("#add_category").css("display", "none");
             var formData = new FormData($('#add_category_form')[0]);
@@ -442,9 +441,8 @@
    <script>
         function do_update(){
 
-            $('#name2_error').text('')
-
-
+            $('#name2_error').text('');
+            $('#image2_error').text('');
 
             $("#editing").css("display", "none");
             $("#editing2").css("display", "block");

@@ -12,6 +12,7 @@ use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\Dashboard\ProductAttachmentController;
 use App\Http\Controllers\Dashboard\CommentController;
 use App\Http\Controllers\Dashboard\InventoryController;
+use App\Http\Controllers\Dashboard\CouponController;
 
 
 Route::get('/dcsc', function() {
@@ -95,6 +96,14 @@ Route::group(['middleware'=>['auth'],'as'=>'dashboard.'], function(){
     Route::post('/store_inventory',         [InventoryController::class, 'store_inventory'])->name('store_inventory');
     Route::post('/update_inventory',        [InventoryController::class, 'update_inventory'])->name('update_inventory');
     Route::post('/destroy_inventory',       [InventoryController::class, 'destroy_inventory'])->name('destroy_inventory');
+
+
+    // coupons
+    Route::get('/coupons',                [CouponController::class, 'coupons'])->name('coupons');
+    Route::get('/get_all_coupons',        [CouponController::class, 'get_all_coupons'])->name('get_all_coupons');
+    Route::post('/store_coupons',         [CouponController::class, 'store_coupons'])->name('store_coupons');
+    Route::post('/update_coupons',        [CouponController::class, 'update_coupons'])->name('update_coupons');
+    Route::post('/destroy_coupons',       [CouponController::class, 'destroy_coupons'])->name('destroy_coupons');
 
 
     // roles and permissions
